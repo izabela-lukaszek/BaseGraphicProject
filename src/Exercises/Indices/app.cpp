@@ -32,8 +32,6 @@ void SimpleShapeApplication::init() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLushort), indices.data(),GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-//Wartości wychodzące poza przedział (-1,1) spowodują że trojkąt będzie przy danym wierzchołku wychodził poza obszar okna
-//Zmiana wartości z nic nie zmienia w pokazywanym na ekranie trójkącie jednak sprawia ze trojkąt staje sie bryłą przestrzenną jednak żeby to zobaczyć w oknie należaloby wykonać animcje obrotu
     std::vector<GLfloat> vertices = {
             -0.5f, -0.5f, 0.0f,
             0.0f,0.0f,1.0f,1.0f,
