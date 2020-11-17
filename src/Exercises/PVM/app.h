@@ -24,6 +24,4 @@ public:
 
 private:
     GLuint vao_;
-    GLuint vao_2;
-    GLuint vao_3;
 };
