@@ -113,7 +113,6 @@ void SimpleShapeApplication::init() {
     glm::mat4 M(1.0f);
     auto V = glm::lookAt(glm::vec3{0.1,1.0,0.5},glm::vec3{0.0,0.0,0.0},glm::vec3{0.0,1.0,0.0});
     auto P = glm::perspective(glm::half_pi<float>(),(float)w/h,0.1f,100.0f);
-    auto PVM = P*V;
     glBufferData(GL_UNIFORM_BUFFER,2*sizeof(glm::mat4), nullptr,GL_STATIC_DRAW);
     glBufferSubData(GL_UNIFORM_BUFFER,0,sizeof(glm::mat4),&P[0]);
     glBufferSubData(GL_UNIFORM_BUFFER,sizeof(glm::mat4),sizeof(glm::mat4),&V[0]);
