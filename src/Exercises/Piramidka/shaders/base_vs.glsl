@@ -7,11 +7,9 @@ out vec3 vertex_color;
 layout(std140) uniform Transformations {
     mat4 P;
     mat4 V;
-
-
 };
 
 void main() {
-    vertex_color=a_vertex_color;
+    vertex_color = a_vertex_color;
     gl_Position = P * V * a_vertex_position;
 }
