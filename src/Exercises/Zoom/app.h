@@ -7,15 +7,14 @@
 
 #include <vector>
 
-
 #include "Application/application.h"
 #include "Application/utils.h"
-
 #include "glad/glad.h"
 #include <Exercises\Zoom\camera.h>
+#include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
-#include <glm/glm.hpp>
 
 class SimpleShapeApplication : public xe::Application {
 public:
@@ -27,8 +26,6 @@ public:
     void frame() override;
 
     void framebuffer_resize_callback(int w, int h) override;
-
-
 
     void set_camera(Camera *camera) { camera_ = camera; }
     Camera *camera() { return camera_; }
