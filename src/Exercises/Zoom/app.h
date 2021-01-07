@@ -10,11 +10,11 @@
 #include "Application/application.h"
 #include "Application/utils.h"
 #include "glad/glad.h"
-#include <Exercises\Zoom\camera.h>
+#include "Exercises\Zoom\camera.h"
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "glm/gtc/matrix_transform.hpp"
 
 class SimpleShapeApplication : public xe::Application {
 public:
