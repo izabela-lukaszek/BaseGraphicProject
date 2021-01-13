@@ -2,7 +2,7 @@
 // Created by pbialas on 25.09.2020.
 //
 
-#include "Exercises\Kamera\app.h"
+#include "Exercises/Kamera/app.h"
 #include <iostream>
 #include <vector>
 #include <tuple>
