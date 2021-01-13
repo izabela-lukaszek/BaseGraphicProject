@@ -2,7 +2,7 @@
 #include <cmath>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "Exercises\Kamera\camera.h"
+#include "Exercises/Kamera/camera.h"
 #include "glm/vec3.hpp"
 
 class CameraControler {
