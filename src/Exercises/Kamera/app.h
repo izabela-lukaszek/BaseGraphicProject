@@ -9,8 +9,8 @@
 #include "Application/application.h"
 #include "Application/utils.h"
 #include "glad/glad.h"
-#include "Exercises/Kamera/camera.h"
-#include "Exercises/Kamera/camera_controler.h"
+#include "Exercises\Kamera\camera.h"
+#include "Exercises\Kamera\camera_controler.h"
 #include "glm/mat4x4.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
@@ -43,7 +43,7 @@ public:
 
     void set_controler(CameraControler *controler) { controler_ = controler; }
 
-    void SimpleShapeApplication::mouse_button_callback(int button, int action, int mods) {
+    void mouse_button_callback(int button, int action, int mods) {
         Application::mouse_button_callback(button, action, mods);
 
         if (controler_) {
@@ -59,7 +59,7 @@ public:
 
     }
 
-    void SimpleShapeApplication::cursor_position_callback(double x, double y) {
+    void cursor_position_callback(double x, double y) {
         Application::cursor_position_callback(x, y);
         if (controler_) {
             controler_->mouse_moved(x, y);
