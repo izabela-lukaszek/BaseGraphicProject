@@ -120,6 +120,12 @@ void SimpleShapeApplication::init() {
         glUniformBlockBinding(program, u_transformations_index, 1);
     }
 
+    glGenBuffers(1, &u_pvm_buffer_);
+    glBindBuffer(GL_UNIFORM_BUFFER,u_pvm_buffer_);
+    glBufferData(GL_UNIFORM_BUFFER,sizeof(glm::mat4), nullptr, GL_STATIC_DRAW);
+    glBindBuffer(GL_UNIFORM_BUFFER,0);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 1, u_pvm_buffer_);
+
     int w, h;
     std::tie(w, h) = frame_buffer_size();
     aspect_ = (float)w/h;
@@ -129,11 +135,7 @@ void SimpleShapeApplication::init() {
     V_ = glm::lookAt(glm::vec3{0.5,1.0,-3.0},glm::vec3{0.0,0.0,0.0},glm::vec3{0.0,0.0,-0.1});
     P_ = glm::perspective(fov_, aspect_, near_, far_);
 
-    glGenBuffers(1, &u_pvm_buffer_);
-    glBindBuffer(GL_UNIFORM_BUFFER,u_pvm_buffer_);
-    glBufferData(GL_UNIFORM_BUFFER,sizeof(glm::mat4), nullptr, GL_STATIC_DRAW);
-    glBindBuffer(GL_UNIFORM_BUFFER,0);
-    glBindBufferBase(GL_UNIFORM_BUFFER, 1, u_pvm_buffer_);
+
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), reinterpret_cast<GLvoid *>(0));
@@ -154,14 +156,15 @@ void SimpleShapeApplication::init() {
 }
 
 void SimpleShapeApplication::frame() {
-    glBindVertexArray(vao_);
-    glDrawElements(GL_TRIANGLES,18,GL_UNSIGNED_SHORT,nullptr);
-    glBindVertexArray(0);
 
     auto PVM = P_ * V_;
     glBindBuffer(GL_UNIFORM_BUFFER, u_pvm_buffer_);
     glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &PVM[0]);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+    glBindVertexArray(vao_);
+    glDrawElements(GL_TRIANGLES,18,GL_UNSIGNED_SHORT,nullptr);
+    glBindVertexArray(0);
 }
 
 void SimpleShapeApplication::framebuffer_resize_callback(int w, int h) {
