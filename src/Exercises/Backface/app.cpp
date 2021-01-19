@@ -6,9 +6,9 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtx/string_cast.hpp"
-#include "glm/glm.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include <glm/glm.hpp>
 #include "Application/utils.h"
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
@@ -120,14 +120,12 @@ void SimpleShapeApplication::init() {
         glUniformBlockBinding(program, u_transformations_index, 1);
     }
 
-    glBindBuffer(GL_UNIFORM_BUFFER,ubo_handle[1]);
-    glBufferData(GL_UNIFORM_BUFFER,2 * sizeof(glm::mat4), nullptr,GL_STATIC_DRAW);
-
-
     int w, h;
     std::tie(w, h) = frame_buffer_size();
     auto V = glm::lookAt(glm::vec3{0.8,1.0,0.3},glm::vec3{0.0,0.0,0.0},glm::vec3{0.0,1.0,0.0});
     auto P = glm::perspective(glm::half_pi<float>(),(float)w/h,0.1f,100.0f);
+    glBindBuffer(GL_UNIFORM_BUFFER,ubo_handle[1]);
+    glBufferData(GL_UNIFORM_BUFFER,2 * sizeof(glm::mat4), nullptr,GL_STATIC_DRAW);
 
     glBufferSubData(GL_UNIFORM_BUFFER,0,sizeof(glm::mat4),&P[0]);
     glBufferSubData(GL_UNIFORM_BUFFER,sizeof(glm::mat4),sizeof(glm::mat4),&V[0]);

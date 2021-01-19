@@ -6,7 +6,6 @@
 #pragma once
 
 #include <vector>
-
 #include "Application/application.h"
 #include "Application/utils.h"
 #include "glad/glad.h"

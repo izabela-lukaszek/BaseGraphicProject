@@ -123,12 +123,6 @@ void SimpleShapeApplication::init() {
         glUniformBlockBinding(program, u_transformations_index, 1);
     }
 
-    glGenBuffers(1, &u_pvm_buffer_);
-    glBindBuffer(GL_UNIFORM_BUFFER,u_pvm_buffer_);
-    glBufferData(GL_UNIFORM_BUFFER,sizeof(glm::mat4), nullptr, GL_STATIC_DRAW);
-    glBindBuffer(GL_UNIFORM_BUFFER,0);
-    glBindBufferBase(GL_UNIFORM_BUFFER, 1, u_pvm_buffer_);
-
     int w, h;
     std::tie(w, h) = frame_buffer_size();
     float aspect_ = (float)w/h;
@@ -137,6 +131,12 @@ void SimpleShapeApplication::init() {
     float far_ = 100.0f;
     camera()->look_at(glm::vec3{0.5,1.0,-3.0},glm::vec3{0.0,0.0,0.0},glm::vec3{0.0,0.0,-0.1});
     camera()->perspective(fov_, aspect_, near_, far_);
+
+    glGenBuffers(1, &u_pvm_buffer_);
+    glBindBuffer(GL_UNIFORM_BUFFER,u_pvm_buffer_);
+    glBufferData(GL_UNIFORM_BUFFER,sizeof(glm::mat4), nullptr, GL_STATIC_DRAW);
+    glBindBuffer(GL_UNIFORM_BUFFER,0);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 1, u_pvm_buffer_);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), reinterpret_cast<GLvoid *>(0));
