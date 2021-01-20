@@ -7,10 +7,11 @@
 
 #include <vector>
 #include "Application/application.h"
+#include "Exercises/Tekstura/pyramid.h"
 #include "Application/utils.h"
 #include "glad/glad.h"
-#include "Exercises/Kamera/camera.h"
-#include "Exercises/Kamera/camera_controler.h"
+#include "Exercises/Tekstura/camera.h"
+#include "Exercises/Tekstura/camera_controler.h"
 #include "glm/mat4x4.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
@@ -65,6 +66,8 @@ public:
             controler_->mouse_moved(x, y);
         }
     }
+
+    std::shared_ptr<Pyramid> pyramid;
 
 private:
     GLuint vao_;

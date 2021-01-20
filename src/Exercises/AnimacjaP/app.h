@@ -6,11 +6,13 @@
 #pragma once
 
 #include <vector>
+#include <chrono>
 #include "Application/application.h"
+#include "Exercises/AnimacjaP/pyramid.h"
 #include "Application/utils.h"
 #include "glad/glad.h"
 #include "Exercises/AnimacjaP/camera.h"
-#include "Exercises/AnimacjaP//camera_controler.h"
+#include "Exercises/AnimacjaP/camera_controler.h"
 #include "glm/mat4x4.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
@@ -65,6 +67,12 @@ public:
             controler_->mouse_moved(x, y);
         }
     }
+
+    Pyramid* pyramid;
+
+    std::chrono::steady_clock::time_point start_;
+
+    float rotation_period;
 
 private:
     GLuint vao_;

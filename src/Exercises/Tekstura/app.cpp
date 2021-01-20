@@ -2,7 +2,9 @@
 // Created by pbialas on 25.09.2020.
 //
 
-#include "Exercises/AnimacjaP//app.h"
+#include "Exercises/Tekstura/app.h"
+#include "Exercises/Tekstura/pyramid.h"
+#include "Exercises/Tekstura/pyramid.cpp"
 #include <iostream>
 #include <vector>
 #include <tuple>
@@ -20,6 +22,10 @@ void SimpleShapeApplication::init() {
     set_controler(new CameraControler(camera()));
 
 
+    //pyramid = new Pyramid();
+    std::shared_ptr<Pyramid> pyramid_;
+    pyramid_ = std::shared_ptr<Pyramid>();
+
     auto program = xe::create_program(std::string(PROJECT_DIR) + "/shaders/base_vs.glsl",
                                       std::string(PROJECT_DIR) + "/shaders/base_fs.glsl");
 
@@ -29,76 +35,7 @@ void SimpleShapeApplication::init() {
         std::cerr << std::string(PROJECT_DIR) + "/shaders/base_fs.glsl" << " shader files" << std::endl;
     }
 
-    std::vector<GLushort> indices = {
-            0,2,1, 2,3,1, 4,5,6, 7,9,8, 10,11,12, 13,15,14
-    };
 
-    std::vector<GLfloat> vertices = {
-
-            0.4f, 0.4f, 0.0f,
-            0.2f, 1.0f, 0.4f,//kolor
-            -0.4f, 0.4f,0.0f,
-            0.2f, 1.0f, 0.4f,//kolor
-            0.4f, -0.4f, 0.0f,
-            0.2f, 1.0f, 0.4f,//kolor
-            -0.4f, -0.4f,0.0f,
-            0.2f, 1.0f, 0.4f,//kolor
-
-            0.4f, 0.4f, 0.0f,
-            1.0f, 0.5f, 0.4f,//kolor
-            -0.4f, 0.4f,0.0f,
-            1.0f, 0.5f, 0.4f,//kolor
-            0.0f, 0.0f, -0.8f,
-            1.0f, 0.5f, 0.4f,//kolor
-
-            0.4f, -0.4f, 0.0f,
-            0.0f, 0.5f, 1.0f,//kolor
-            -0.4f, -0.4f,0.0f,
-            0.0f, 0.5f, 1.0f,//kolor
-            0.0f, 0.0f, -0.8f,
-            0.0f, 0.5f, 1.0f,//kolor
-
-            0.4f, -0.4f, 0.0f,
-            0.6f, 0.2f, 0.8f,//kolor
-            0.4f, 0.4f,0.0f,
-            0.6f, 0.2f, 0.8f,//kolor
-            0.0f, 0.0f, -0.8f,
-            0.6f, 0.2f, 0.8f,//kolor
-
-            -0.4f, -0.4f, 0.0f,
-            0.9f, 0.9f, 0.2f,//kolor
-            -0.4f, 0.4f,0.0f,
-            0.9f, 0.9f, 0.2f,//kolor
-            0.0f, 0.0f, -0.8f,
-            0.9f, 0.9f, 0.2f,//kolor
-
-
-    };
-
-    GLuint v_buffer_handle;
-    glGenBuffers(1, &v_buffer_handle);
-    glBindBuffer(GL_ARRAY_BUFFER, v_buffer_handle);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    GLuint idx_buffer_handle;
-    glGenBuffers(1,&idx_buffer_handle);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_buffer_handle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLushort), indices.data(),GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    glGenVertexArrays(1, &vao_);
-    glBindVertexArray(vao_);
-    glBindBuffer(GL_ARRAY_BUFFER, v_buffer_handle);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_buffer_handle);
-
-    /*auto u_modifiers_index = glGetUniformBlockIndex(program, "Modifiers");
-    if (u_modifiers_index == GL_INVALID_INDEX){
-        std::cout << "Cannot find Modifiers uniform block in program" << std::endl;
-    }
-    else {
-        glUniformBlockBinding(program, u_modifiers_index, 0);
-    }*/
 
     GLuint ubo_handle;
     glGenBuffers(1,&ubo_handle);

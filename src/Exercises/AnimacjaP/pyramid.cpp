@@ -77,10 +77,15 @@ Pyramid::Pyramid() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->buffer_[1]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+
 }
 
 Pyramid::~Pyramid() {
     //Tu usuwamy VAO i bufory
+    glDeleteBuffers(2, this->buffer_);
+    glDeleteVertexArrays(1,&vao_);
 }
 
 void Pyramid::draw() {

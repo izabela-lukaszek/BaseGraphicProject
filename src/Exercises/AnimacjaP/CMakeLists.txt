@@ -9,6 +9,8 @@ add_executable(${PROJECT_NAME}
         main.cpp
         app.h
         app.cpp
+        pyramid.h
+        pyramid.cpp
         $<TARGET_OBJECTS:glad>
         camera.h rotation.h camera_controler.h pyramid.cpp pyramid.h)
 
