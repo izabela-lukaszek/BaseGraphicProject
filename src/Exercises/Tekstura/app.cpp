@@ -3,8 +3,6 @@
 //
 
 #include "Exercises/Tekstura/app.h"
-#include "Exercises/Tekstura/pyramid.h"
-#include "Exercises/Tekstura/pyramid.cpp"
 #include <iostream>
 #include <vector>
 #include <tuple>
@@ -23,8 +21,9 @@ void SimpleShapeApplication::init() {
 
 
     //pyramid = new Pyramid();
-    std::shared_ptr<Pyramid> pyramid_;
-    pyramid_ = std::shared_ptr<Pyramid>();
+    //std::shared_ptr<Pyramid> pyramid_;
+    this->pyramid = std::make_shared<Pyramid>();
+
 
     auto program = xe::create_program(std::string(PROJECT_DIR) + "/shaders/base_vs.glsl",
                                       std::string(PROJECT_DIR) + "/shaders/base_fs.glsl");
@@ -36,18 +35,12 @@ void SimpleShapeApplication::init() {
     }
 
 
-
-    GLuint ubo_handle;
-    glGenBuffers(1,&ubo_handle);
-    glBindBuffer(GL_UNIFORM_BUFFER, ubo_handle);
-    glBufferData(GL_UNIFORM_BUFFER, 8 * sizeof(float), nullptr, GL_STATIC_DRAW);
-
-    /*float light_intensity=1.0;
-    float light_color[3] = {0.5,0.5,0.5};
-    glBufferSubData(GL_UNIFORM_BUFFER,0,sizeof(float),&light_intensity);
-    glBufferSubData(GL_UNIFORM_BUFFER,4 * sizeof(float),3 * sizeof(float),light_color);*/
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
-    glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo_handle);//<---------
+    auto  u_diffuse_map_location = glGetUniformLocation(program,"diffuse_map");
+    if(u_diffuse_map_location==-1) {
+        std::cerr<<"Cannot find uniform diffuse_map\n";
+    } else {
+        glUniform1ui(u_diffuse_map_location, 0);
+    }
 
 
     auto u_transformations_index = glGetUniformBlockIndex(program, "Transformations");
@@ -75,12 +68,7 @@ void SimpleShapeApplication::init() {
     camera()->look_at(glm::vec3{0.5,1.0,-3.0},glm::vec3{0.0,0.0,0.0},glm::vec3{0.0,0.0,-0.1});
     camera()->perspective(fov_, aspect_, near_, far_);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), reinterpret_cast<GLvoid *>(0));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), reinterpret_cast<GLvoid *>(3 * sizeof(GLfloat)));
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+
 
     glClearColor(0.81f, 0.81f, 0.8f, 1.0f);
     glViewport(0, 0, w, h);
@@ -100,9 +88,8 @@ void SimpleShapeApplication::frame() {
     glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &PVM[0]);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-    glBindVertexArray(vao_);
-    glDrawElements(GL_TRIANGLES,18,GL_UNSIGNED_SHORT,nullptr);
-    glBindVertexArray(0);
+    this->pyramid->draw();
+
 }
 
 void SimpleShapeApplication::framebuffer_resize_callback(int w, int h) {

@@ -3,7 +3,7 @@
 #include "glm/glm.hpp"
 #include "glm/vec3.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "Exercises/Kamera/camera.h"
+#include "Exercises/Tekstura/camera.h"
 
 
 inline glm::mat3 rotation(float angle, const glm::vec3 &axis) {
