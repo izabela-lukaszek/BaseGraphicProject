@@ -17,10 +17,11 @@ public:
     Pyramid(Pyramid&& rhs) = delete;
 
 
-    GLuint diffuse_texture_;
+
+
 
 private:
     GLuint vao_;
     GLuint buffer_[2];
-
+    GLuint diffuse_texture_;
 };
