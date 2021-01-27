@@ -7,8 +7,6 @@
 #include <vector>
 #include <tuple>
 #include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtx/string_cast.hpp"
-#include "glm/glm.hpp"
 #include "Application/utils.h"
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>

@@ -17,9 +17,6 @@ public:
     Pyramid(Pyramid&& rhs) = delete;
 
 
-
-
-
 private:
     GLuint vao_;
     GLuint buffer_[2];
