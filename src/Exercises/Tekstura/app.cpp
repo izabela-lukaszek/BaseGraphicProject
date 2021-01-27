@@ -20,12 +20,6 @@ void SimpleShapeApplication::init() {
     set_camera(new Camera);
     set_controler(new CameraControler(camera()));
 
-
-    //pyramid = new Pyramid();
-    //std::shared_ptr<Pyramid> pyramid_;
-    this->pyramid = std::make_shared<Pyramid>();
-
-
     auto program = xe::create_program(std::string(PROJECT_DIR) + "/shaders/base_vs.glsl",
                                       std::string(PROJECT_DIR) + "/shaders/base_fs.glsl");
 
@@ -35,6 +29,7 @@ void SimpleShapeApplication::init() {
         std::cerr << std::string(PROJECT_DIR) + "/shaders/base_fs.glsl" << " shader files" << std::endl;
     }
 
+    this->pyramid = std::make_shared<Pyramid>();
 
     auto  u_diffuse_map_location = glGetUniformLocation(program,"diffuse_map");
     if(u_diffuse_map_location==-1) {
@@ -68,7 +63,6 @@ void SimpleShapeApplication::init() {
     float far_ = 100.0f;
     camera()->look_at(glm::vec3{0.5,1.0,-3.0},glm::vec3{0.0,0.0,0.0},glm::vec3{0.0,0.0,-0.1});
     camera()->perspective(fov_, aspect_, near_, far_);
-
 
 
     glClearColor(0.81f, 0.81f, 0.8f, 1.0f);
