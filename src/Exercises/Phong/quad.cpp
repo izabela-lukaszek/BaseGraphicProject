@@ -10,19 +10,19 @@ Quad:: Quad() {
         Potem ładujemy dane wierzchołków i indeksow do buforów  i  podłaczamy je do atrybutów w szaderze
    */
     std::vector<GLushort> indices = {
-            0,1,2, 2,3,1, //0,1,4, 2,5,3, 2,0,6, 3,7,1
+            0,2,1, 2,3,1, //0,1,4, 2,5,3, 2,0,6, 3,7,1
     };
 
     std::vector<GLfloat> vertices = {
             
             1.0f, 1.0f, 0.0f,//0
-            0.5000f, 0.8090f,
+            1.0f, 1.0f,
             -1.0f, 1.0f,0.0f,//1
-            0.1910, 0.5000f,
+            0.0f,1.0f,
             1.0f, -1.0f, 0.0f,//2
-            0.8090f, 0.5000f,
+            1.0f, 0.0f,
             -1.0f, -1.0f,0.0f,//3
-            0.5000f, 0.1910,
+            0.0f,0.0f,
 
             /*0.0f, 0.0f, -0.8f,//4
             0.0f, 1.0f,
@@ -62,10 +62,10 @@ Quad:: Quad() {
 
 
     int width, height, n_channels;
-    auto texture_filename = std::string(PROJECT_DIR) + "/Textures/multicolor.png";
+    auto texture_filename = std::string(PROJECT_DIR) + "/Textures/silver.png";
     uint8_t  *data = stbi_load(texture_filename.c_str(), &width, &height, &n_channels, 0);
     glBindTexture(GL_TEXTURE_2D, diffuse_texture_);
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB, width, height,0, GL_RGB, GL_UNSIGNED_BYTE,data);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA, width, height,0, GL_RGBA, GL_UNSIGNED_BYTE,data);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
