@@ -18,6 +18,7 @@ void SimpleShapeApplication::init() {
     set_camera(new Camera);
     set_controler(new CameraControler(camera()));
 
+
     auto program = xe::create_program(std::string(PROJECT_DIR) + "/shaders/base_vs.glsl",
                                       std::string(PROJECT_DIR) + "/shaders/base_fs.glsl");
 
@@ -27,15 +28,12 @@ void SimpleShapeApplication::init() {
         std::cerr << std::string(PROJECT_DIR) + "/shaders/base_fs.glsl" << " shader files" << std::endl;
     }
 
-    this->quad = std::make_shared<Quad>();
-
     auto  u_diffuse_map_location = glGetUniformLocation(program,"diffuse_map");
     if(u_diffuse_map_location==-1) {
         std::cerr<<"Cannot find uniform diffuse_map\n";
     } else {
         glUniform1ui(u_diffuse_map_location, 0);
     }
-
 
     auto u_transformations_index = glGetUniformBlockIndex(program, "Transformations");
     if (u_transformations_index == GL_INVALID_INDEX)
@@ -47,9 +45,11 @@ void SimpleShapeApplication::init() {
         glUniformBlockBinding(program, u_transformations_index, 1);
     }
 
+    quad = new Quad();
+
     glGenBuffers(1, &u_pvm_buffer_);
     glBindBuffer(GL_UNIFORM_BUFFER,u_pvm_buffer_);
-    glBufferData(GL_UNIFORM_BUFFER,2 * sizeof(glm::mat4) + 3 * sizeof(glm::vec4), nullptr, GL_STATIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER,3 * sizeof(glm::mat4) + 3 * sizeof(glm::vec4), nullptr, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER,0);
     glBindBufferBase(GL_UNIFORM_BUFFER, 0, u_pvm_buffer_);
 
@@ -61,14 +61,34 @@ void SimpleShapeApplication::init() {
     float far_ = 100.0f;
     camera()->look_at(glm::vec3{0.5,1.0,-3.0},glm::vec3{0.0,0.0,0.0},glm::vec3{0.0,0.0,-0.1});
     camera()->perspective(fov_, aspect_, near_, far_);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 1, u_pvm_buffer_);
 
+    auto u_light_index = glGetUniformBlockIndex(program, "Light");
+    if (u_light_index == -1) {
+        std::cerr << "Cannot find uniform Light" << std::endl;
+    }
+    else {
+        glUniformBlockBinding(program, u_light_index, 2);
+    }
+
+    glGenBuffers(1, &light_buffer);
+    glBindBuffer(GL_UNIFORM_BUFFER,light_buffer);
+    glBufferData(GL_UNIFORM_BUFFER, 4 * sizeof(glm::vec4), nullptr, GL_STATIC_DRAW);
+
+    auto V = camera()->view();
+    light_.position = V * glm::vec4(0.0f, 0.0f, 0.5f, 1.0f);
+    light_.color = glm::vec4(1.0f,1.0f,1.0f,1.0f);
+    light_.a = glm::vec4(1.0f,1.0f,1.0f,1.0f);
+    light_.ambient = glm::vec3(0.2f,0.2f,0.2f);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 2,light_buffer);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec4), &light_.position[0]);
+    glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec4), &light_.color[0]);
+    glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::vec4), sizeof(glm::vec4), &light_.a[0]);
+    glBufferSubData(GL_UNIFORM_BUFFER, 3 * sizeof(glm::vec4), sizeof(glm::vec4), &light_.ambient[0]);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     glClearColor(0.81f, 0.81f, 0.8f, 1.0f);
     glViewport(0, 0, w, h);
-
-    //glEnable(GL_CULL_FACE);
-    //glFrontFace(GL_CW);
-    //glCullFace(GL_BACK);
 
     glEnable(GL_DEPTH_TEST);
     glUseProgram(program);
@@ -76,20 +96,23 @@ void SimpleShapeApplication::init() {
 
 void SimpleShapeApplication::frame() {
 
-    auto P = camera()->projection();
-    auto VM =  camera()->view();
+    glm::mat4 P = camera()->projection();
+    glm::mat4 VM =  camera()->view();
     auto R = glm::mat3(VM);
     auto N = glm::transpose(glm::inverse(R));
+
     glBindBuffer(GL_UNIFORM_BUFFER, u_pvm_buffer_);
     glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &P);
     glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), &VM);
     glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::vec4), &N[0]);
-    glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::vec4), &N[1]);
-    glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::vec4), &N[2]);
-
+    glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4) + sizeof(glm::vec4), sizeof(glm::vec3), &N[1]);
+    glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4) + 2 * sizeof(glm::vec4), sizeof(glm::vec3), &N[2]);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-    this->quad->draw();
+    light_.position = VM * glm::vec4(0.0f,0.0f,0.5f,1.0f);
+    glBindBuffer(GL_UNIFORM_BUFFER,light_buffer);
+    glBufferSubData(GL_UNIFORM_BUFFER,0,sizeof(glm::vec4),&light_.position[0]);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    quad->draw();
 
 }
 

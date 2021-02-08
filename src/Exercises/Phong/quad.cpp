@@ -31,17 +31,6 @@ Quad:: Quad() {
             0.0f,0.0f,
             0.0f,0.0f,1.0f,
 
-            /*0.0f, 0.0f, -0.8f,//4
-            0.0f, 1.0f,
-
-            0.0f, 0.0f, -0.8f,//5
-            1.0f, 0.0f,
-
-            0.0f, 0.0f, -0.8f,//6
-            1.0f, 1.0f,
-
-            0.0f, 0.0f, -0.8f,//7
-            0.0f, 0.0f,*/
     };
 
     glGenBuffers(2, this->buffer_);
@@ -93,7 +82,7 @@ void  Quad::draw() {
     glBindTexture(GL_TEXTURE_2D,diffuse_texture_);
 
     glBindVertexArray(vao_);
-    glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_SHORT,nullptr);
+    glDrawElements(GL_TRIANGLES,18,GL_UNSIGNED_SHORT,nullptr);
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D,0);
 

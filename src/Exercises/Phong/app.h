@@ -17,6 +17,14 @@
 #include "glm/vec4.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+
+struct Light {
+    glm::vec4 position;
+    glm::vec4 color;
+    glm::vec4 a;
+    glm::vec3 ambient;
+};
+
 class SimpleShapeApplication : public xe::Application {
 public:
     SimpleShapeApplication(int width, int height, std::string title, int major = 4, int minor = 1) :
@@ -67,12 +75,14 @@ public:
         }
     }
 
-    std::shared_ptr<Quad> quad;
+    Quad* quad;
 
 private:
     GLuint vao_;
     Camera *camera_;
     GLuint u_pvm_buffer_;
     CameraControler *controler_;
+    Light light_;
+    GLuint light_buffer;
 
 };
