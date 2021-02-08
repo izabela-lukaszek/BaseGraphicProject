@@ -49,9 +49,9 @@ void SimpleShapeApplication::init() {
 
     glGenBuffers(1, &u_pvm_buffer_);
     glBindBuffer(GL_UNIFORM_BUFFER,u_pvm_buffer_);
-    glBufferData(GL_UNIFORM_BUFFER,sizeof(glm::mat4), nullptr, GL_STATIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER,2 * sizeof(glm::mat4) + 3 * sizeof(glm::vec4), nullptr, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER,0);
-    glBindBufferBase(GL_UNIFORM_BUFFER, 1, u_pvm_buffer_);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, u_pvm_buffer_);
 
     int w, h;
     std::tie(w, h) = frame_buffer_size();
@@ -76,9 +76,17 @@ void SimpleShapeApplication::init() {
 
 void SimpleShapeApplication::frame() {
 
-    auto PVM = camera()->projection() * camera()->view();
+    auto P = camera()->projection();
+    auto VM =  camera()->view();
+    auto R = glm::mat3(VM);
+    auto N = glm::transpose(glm::inverse(R));
     glBindBuffer(GL_UNIFORM_BUFFER, u_pvm_buffer_);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &PVM[0]);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &P);
+    glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), &VM);
+    glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::vec4), &N[0]);
+    glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::vec4), &N[1]);
+    glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::vec4), &N[2]);
+
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     this->quad->draw();

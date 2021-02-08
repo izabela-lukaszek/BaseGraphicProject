@@ -17,12 +17,19 @@ Quad:: Quad() {
             
             1.0f, 1.0f, 0.0f,//0
             1.0f, 1.0f,
+            0.0f,0.0f,1.0f,
+
             -1.0f, 1.0f,0.0f,//1
             0.0f,1.0f,
+            0.0f,0.0f,1.0f,
+
             1.0f, -1.0f, 0.0f,//2
             1.0f, 0.0f,
+            0.0f,0.0f,1.0f,
+
             -1.0f, -1.0f,0.0f,//3
             0.0f,0.0f,
+            0.0f,0.0f,1.0f,
 
             /*0.0f, 0.0f, -0.8f,//4
             0.0f, 1.0f,
@@ -51,9 +58,11 @@ Quad:: Quad() {
     glBindBuffer(GL_ARRAY_BUFFER, this->buffer_[0]);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<GLvoid *>(0));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), reinterpret_cast<GLvoid *>(0));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<GLvoid *>(3 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), reinterpret_cast<GLvoid *>(3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), reinterpret_cast<GLvoid *>(5 * sizeof(GLfloat)));
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->buffer_[1]);
