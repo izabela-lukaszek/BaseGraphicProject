@@ -123,4 +123,6 @@ void SimpleShapeApplication::framebuffer_resize_callback(int w, int h) {
     camera()->set_aspect(aspect_);
 }
 
-
+void SimpleShapeApplication::cleanup() {
+    delete quad;
+}

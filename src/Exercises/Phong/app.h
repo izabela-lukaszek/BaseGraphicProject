@@ -36,6 +36,8 @@ public:
 
     void framebuffer_resize_callback(int w, int h) override;
 
+    void cleanup() override;
+
     void set_camera(Camera *camera) { camera_ = camera; }
     Camera *camera() { return camera_; }
     ~SimpleShapeApplication() {
